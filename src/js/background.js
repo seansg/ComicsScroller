@@ -11,10 +11,14 @@ import {
 import {
   fetchChapterPage$ as fetchChapterPage$comicbus,
 } from './container/App/reducers/comicBusEpic';
+import {
+  fetchChapterPage$ as fetchChapterPage$nowcomic,
+} from './container/App/reducers/nowComicEpic';
 
 const dm5Regex = /http\:\/\/(tel||www)\.dm5\.com\/(m\d+)\//;
 const sfRegex = /http\:\/\/comic\.sfacg\.com\/(HTML\/[^\/]+\/.+)$/;
 const comicbusRegex = /http\:\/\/(www|v)\.comicbus.com\/online\/(comic-\d+\.html\?ch=.*$)/;
+const nowcomicRegex = /http\:\/\/(www|v)\.nowcomic.com\/online\/(manga_\d+\.html\?ch=.*$)/;
 
 declare var chrome: any;
 declare var ga: any;
@@ -23,6 +27,7 @@ const fetchChapterPage$ = {
   sf: fetchChapterPage$Sf,
   dm5: fetchChapterPage$Dm5,
   comicbus: fetchChapterPage$comicbus,
+  nowcomic: fetchChapterPage$comicbus,
 };
 
 function dm5RefererHandler(details) {
@@ -192,6 +197,13 @@ chrome.webNavigation.onBeforeNavigate.addListener(
         url: `${chrome.extension.getURL('app.html')}?site=comicbus&chapter=${chapter}`,
       });
       ga('send', 'event', 'comicbus view');
+    } else if (nowcomicRegex.test(details.url)) {
+      console.log('nowcomic fired');
+      const chapter = nowcomicRegex.exec(details.url)[2];
+      chrome.tabs.update(details.tabId, {
+        url: `${chrome.extension.getURL('app.html')}?site=nowcomic&chapter=${chapter}`,
+      });
+      ga('send', 'event', 'nowcomic view');
     } else if (sfRegex.test(details.url)) {
       console.log('sf fired');
       const chapter = sfRegex.exec(details.url)[1];
@@ -212,6 +224,7 @@ chrome.webNavigation.onBeforeNavigate.addListener(
   {
     url: [
       { urlMatches: 'comicbus\.com\/online\/.*$' },
+      { urlMatches: 'nowcomic\.com\/online\/.*$' },
       { urlMatches: 'comic\.sfacg\.com\/HTML\/[^\/]+\/.+$' },
       { urlMatches: 'http://(tel||www)\.dm5\.com/m\d*' },
     ],

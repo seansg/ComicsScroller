@@ -5,6 +5,7 @@ const initObject = {
   dm5: {},
   sf: {},
   comicbus: {},
+  nowcomic: {},
   version: chrome.runtime.getManifest().version,
 };
 

@@ -32,6 +32,17 @@ import {
   updateReaded as updateReadedComicbus,
 } from './comicBusEpic';
 
+import {
+  fetchChapterEpic as fetchChapterEpicNowComic,
+  fetchChapter as fetchChapterNowComic,
+  fetchImgSrcEpic as fetchImgSrcEpicNowComic,
+  fetchImgSrc as fetchImgSrcNowComic,
+  fetchImgListEpic as fetchImgListEpicNowComic,
+  fetchImgList as fetchImgListNowComic,
+  updateReadedEpic as updateReadedEpicNowComic,
+  updateReaded as updateReadedNowComic,
+} from './nowComicEpic';
+
 function getInfor(site) {
   switch (site) {
     case 'dm5':
@@ -48,6 +59,11 @@ function getInfor(site) {
       return {
         site,
         baseURL: 'http://www.comicbus.com',
+      };
+    case 'nowcomic':
+      return {
+        site,
+        baseURL: 'http://www.nowcomic.com',
       };
     default:
       return {};
@@ -77,6 +93,13 @@ function getAction(site) {
         fetchImgList: fetchImgListComicbus,
         updateReaded: updateReadedComicbus,
       };
+    case 'nowcomic':
+      return {
+        fetchChapter: fetchChapterNowComic,
+        fetchImgSrc: fetchImgSrcNowComic,
+        fetchImgList: fetchImgListNowComic,
+        updateReaded: updateReadedNowComic,
+      };
     default:
       return {};
   }
@@ -104,6 +127,13 @@ function getEpic(site) {
         fetchImgSrcEpic: fetchImgSrcEpicComicbus,
         fetchImgListEpic: fetchImgListEpicComicbus,
         updateReadedEpic: updateReadedEpicComicbus,
+      };
+    case 'nowcomic':
+      return {
+        fetchChapterEpic: fetchChapterEpicNowComic,
+        fetchImgSrcEpic: fetchImgSrcEpicNowComic,
+        fetchImgListEpic: fetchImgListEpicNowComic,
+        updateReadedEpic: updateReadedEpicNowComic,
       };
     default:
       return {};

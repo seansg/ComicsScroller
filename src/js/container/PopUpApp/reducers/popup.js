@@ -13,6 +13,7 @@ type Action = {
     dm5: any,
     sf: any,
     comicbus: any,
+    nowcomic: any,
   },
   category: string,
   index: number,
@@ -31,6 +32,9 @@ type State = {
   comicbus: {
     baseURL: 'http://www.comicbus.com',
   },
+  nowcomic: {
+    baseURL: 'http://www.nowcomic.com',
+  },
 };
 
 const initialState = {
@@ -45,6 +49,9 @@ const initialState = {
   },
   comicbus: {
     baseURL: 'http://www.comicbus.com',
+  },
+  nowcomic: {
+    baseURL: 'http://www.nowcomic.com',
   },
 };
 
@@ -83,6 +90,10 @@ export default function popup(state: State = initialState, action: Action) {
         comicbus: {
           ...state.comicbus,
           ...action.data.comicbus,
+        },
+        nowcomic: {
+          ...state.nowcomic,
+          ...action.data.nowcomic,
         },
       };
     case REMOVE_CARD:

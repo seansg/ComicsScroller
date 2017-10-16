@@ -28,7 +28,7 @@ import {
 } from './comics';
 import { startScroll } from './scrollEpic';
 
-const baseURL = 'http://www.comicbus.com';
+const baseURL = 'http://v.nowcomic.com';
 const FETCH_CHAPTER = 'FETCH_CHAPTER';
 const FETCH_IMAGE_SRC = 'FETCH_IMAGE_SRC';
 const FETCH_IMG_LIST = 'FETCH_IMG_LIST';
@@ -180,11 +180,11 @@ export function fetchChapterPage$(url: string, comicsID: string) {
     const chapterList = [
       ...map(chapterNodes, n => {
         const arr = /\'(.*)-(.*)\.html/.exec(n.getAttribute('onclick'));
-        return `comic-${arr[1]}.html?ch=${arr[2]}`;
+        return `manga_${arr[1]}.html?ch=${arr[2]}`;
       }).reverse(),
       ...map(volNodes, n => {
         const arr = /\'(.*)-(.*)\.html/.exec(n.getAttribute('onclick'));
-        return `comic-${arr[1]}.html?ch=${arr[2]}`;
+        return `manga_${arr[1]}.html?ch=${arr[2]}`;
       }).reverse(),
     ];
     const uniChapterList = Array.from(new Set(chapterList)).reverse()
@@ -195,11 +195,11 @@ export function fetchChapterPage$(url: string, comicsID: string) {
           const arr = /\'(.*)-(.*)\.html/.exec(n.getAttribute('onclick'));
           return {
             ...acc,
-            [`comic-${arr[1]}.html?ch=${arr[2]}`]: {
+            [`manga_${arr[1]}.html?ch=${arr[2]}`]: {
               title: n.children.length > 0
                 ? n.children[0].textContent
                 : n.textContent,
-              href: `${baseURL}/online/comic-${arr[1]}.html?ch=${arr[2]}`,
+              href: `${baseURL}/online/manga_${arr[1]}.html?ch=${arr[2]}`,
             },
           };
         },
@@ -211,11 +211,11 @@ export function fetchChapterPage$(url: string, comicsID: string) {
           const arr = /\'(.*)-(.*)\.html/.exec(n.getAttribute('onclick'));
           return {
             ...acc,
-            [`comic-${arr[1]}.html?ch=${arr[2]}`]: {
+            [`manga_${arr[1]}.html?ch=${arr[2]}`]: {
               title: n.children.length > 0
                 ? n.children[0].textContent
                 : n.textContent,
-              href: `${baseURL}/online/comic-${arr[1]}.html?ch=${arr[2]}`,
+              href: `${baseURL}/online/manga_${arr[1]}.html?ch=${arr[2]}`,
             },
           };
         },
@@ -274,23 +274,23 @@ export function fetchChapterEpic(action$: any) {
               update: filter(
                 item.update,
                 updateItem =>
-                  updateItem.site !== 'comicbus' ||
+                  updateItem.site !== 'nowcomic' ||
                   updateItem.chapterID !== action.chapter,
               ),
               history: [
                 {
-                  site: 'comicbus',
+                  site: 'nowcomic',
                   comicsID,
                 },
                 ...filter(
                   item.history,
                   historyItem =>
-                    historyItem.site !== 'comicbus' ||
+                    historyItem.site !== 'nowcomic' ||
                     historyItem.comicsID !== comicsID,
                 ),
               ],
-              comicbus: {
-                ...item.comicbus,
+              nowcomic: {
+                ...item.nowcomic,
                 [comicsID]: {
                   title,
                   chapters,
@@ -299,20 +299,20 @@ export function fetchChapterEpic(action$: any) {
                   chapterURL: `${baseURL}/html/${comicsID}.html`,
                   lastReaded: action.chapter,
                   readedChapters: {
-                    ...(item.comicbus[comicsID]
-                      ? item.comicbus[comicsID].readedChapters
+                    ...(item.nowcomic[comicsID]
+                      ? item.nowcomic[comicsID].readedChapters
                       : {}),
                     [action.chapter]: action.chapter,
                   },
                 },
               },
-            };            
+            };
             chrome.browserAction.setBadgeText({
               text: `${newItem.update.length === 0 ? '' : newItem.update.length}`,
             });
             const subscribe = some(
               item.subscribe,
-              citem => citem.site === 'comicbus' && citem.comicsID === comicsID,
+              citem => citem.site === 'nowcomic' && citem.comicsID === comicsID,
             );
             return Observable.merge(
               Observable.of(updateSubscribe(subscribe)),
@@ -321,11 +321,11 @@ export function fetchChapterEpic(action$: any) {
               ).mergeMap(() => {
                 chrome.browserAction.setBadgeText({
                   text: `${newItem.update.length === 0 ? '' : newItem.update.length}`,
-                });
+                });                
                 const result$ = [
                   updateTitle(title),
                   updateReadedChapters(
-                    newItem.comicbus[comicsID].readedChapters,
+                    newItem.nowcomic[comicsID].readedChapters,
                   ),
                   updateChapters(chapters),
                   updateChapterList(chapterList),
@@ -362,15 +362,15 @@ export function updateReadedEpic(action$: any, store: { getState: Function }) {
         ...item,
         update: filter(
           item.update,
-          uitem => uitem.site !== 'comicbus' || uitem.chapterID !== chapterID,
+          uitem => uitem.site !== 'nowcomic' || uitem.chapterID !== chapterID,
         ),
-        comicbus: {
-          ...item.comicbus,
+        nowcomic: {
+          ...item.nowcomic,
           [comicsID]: {
-            ...item.comicbus[comicsID],
+            ...item.nowcomic[comicsID],
             lastReaded: chapterID,
             readedChapters: {
-              ...item.comicbus[comicsID].readedChapters,
+              ...item.nowcomic[comicsID].readedChapters,
               [chapterID]: chapterID,
             },
           },
@@ -383,7 +383,7 @@ export function updateReadedEpic(action$: any, store: { getState: Function }) {
           text: `${newItem.update.length === 0 ? '' : newItem.update.length}`,
         });
         return [
-          updateReadedChapters(newItem.comicbus[comicsID].readedChapters),
+          updateReadedChapters(newItem.nowcomic[comicsID].readedChapters),
           updateChapterNowIndex(action.index),
         ];
       });
