@@ -130,7 +130,7 @@ function fetchImgs$(chapter: string) {
       showChapter = eval(srcString[1])
       eval(responseContext.match(/ps=[a-zA-Z]+;/g)[0])
       if (currentCh == showChapter) {
-        for(h=1; h < ps; h++) {
+        for(h=1; h <= ps; h++) {
           p = h
           eval(srcString[0])
           imgList.push({
