@@ -292,7 +292,7 @@ class PopUpApp extends Component {
           <div>
             {map(this.props.update, (item, i) => (
               <ComicCard
-                key={`update_${item.comicsID}_${item.chapterID}`}
+                key={`update_${item.site}_${item.comicsID}_${item.chapterID}`}
                 category={this.state.selectedType}
                 shift={item.shift}
                 move={item.move}
@@ -308,7 +308,7 @@ class PopUpApp extends Component {
           <div>
             {map(this.props.subscribe, (item, i) => (
               <ComicCard
-                key={`subscribe_${item.comicsID}`}
+                key={`subscribe_${item.site}_${item.comicsID}`}
                 category={this.state.selectedType}
                 shift={item.shift}
                 move={item.move}
@@ -322,7 +322,7 @@ class PopUpApp extends Component {
           <div>
             {map(this.props.history, (item, i) => (
               <ComicCard
-                key={`history_${item.comicsID}`}
+                key={`history_${item.site}_${item.comicsID}`}
                 category={this.state.selectedType}
                 shift={item.shift}
                 move={item.move}
