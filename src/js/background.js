@@ -27,7 +27,7 @@ const fetchChapterPage$ = {
   sf: fetchChapterPage$Sf,
   dm5: fetchChapterPage$Dm5,
   comicbus: fetchChapterPage$comicbus,
-  nowcomic: fetchChapterPage$comicbus,
+  nowcomic: fetchChapterPage$nowcomic,
 };
 
 function dm5RefererHandler(details) {
@@ -106,6 +106,7 @@ function comicsQuery() {
         const fetchChapterPage = fetchChapterPage$[site];
         fetchChapterPage(
           chapterURL,
+          comicsID,
         ).subscribe(({ title, chapterList, coverURL, chapters }) => {
           const comic = item[site][comicsID];
           forEach(chapterList, chapterID => {
