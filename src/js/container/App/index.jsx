@@ -220,6 +220,7 @@ function mapStateToProps(state) {
     site,
     comicsID,
     baseURL,
+    chapterURL,
   } = state.comics;
   const chapterID = chapterList[chapterNowIndex];
   return {
@@ -237,7 +238,7 @@ function mapStateToProps(state) {
     chapterNowIndex,
     comicsID,
     subscribe,
-    chapterURL: `${baseURL}/${comicsID}`,
+    chapterURL,
   };
 }
 

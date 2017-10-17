@@ -20,6 +20,7 @@ type State = {
     result: Array<*>,
     entity: {},
   },
+  chapterURL: string,
 };
 
 type Action = {
@@ -51,11 +52,13 @@ const initialState = {
     result: [],
     entity: {},
   },
+  chapterURL: '',
 };
 
 const UPDATE_COMICS_ID = 'UPDATE_COMICS_ID';
 const UPDATE_SUBSCRIBE = 'UPDATE_SUBSCRIBE';
 const UPDATE_TITLE = 'UPDATE_TITLE';
+const UPDATE_CHAPTER_URL = 'UPDATE_CHAPTER_URL';
 const UPDATE_CHAPTERS = 'UPDATE_CHAPTERS';
 const UPDATE_CHAPTER_LIST = 'UPDATE_CHAPTER_LIST';
 const UPDATE_CHAPTER_LATEST_INDEX = 'UPDATE_CHAPTER_LATEST_INDEX';
@@ -201,6 +204,11 @@ export default function comics(state: State = initialState, action: Action) {
         ...state,
         title: action.data,
       };
+    case UPDATE_CHAPTER_URL:
+      return {
+        ...state,
+        chapterURL: action.data,
+      }
     case RESET_IMAGE:
       return {
         ...state,
@@ -221,6 +229,10 @@ export default function comics(state: State = initialState, action: Action) {
 
 export function updateTitle(data: string) {
   return { type: UPDATE_TITLE, data };
+}
+
+export function updateChapterURL(data: string) {
+  return { type: UPDATE_CHAPTER_URL, data };
 }
 
 export function updateComicsID(data: string) {

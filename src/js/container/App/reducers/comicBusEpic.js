@@ -15,6 +15,7 @@ import reduce from 'lodash/reduce';
 import some from 'lodash/some';
 import {
   updateTitle,
+  updateChapterURL,
   updateComicsID,
   updateChapters,
   updateChapterList,
@@ -269,6 +270,7 @@ export function fetchChapterEpic(action$: any) {
           return Observable.bindCallback(
             chrome.storage.local.get,
           )().mergeMap(item => {
+            const chapterURL = `${baseURL}/html/${comicsID}.html`
             const newItem = {
               ...item,
               update: filter(
@@ -296,7 +298,7 @@ export function fetchChapterEpic(action$: any) {
                   chapters,
                   chapterList,
                   coverURL,
-                  chapterURL: `${baseURL}/html/${comicsID}.html`,
+                  chapterURL,
                   lastReaded: action.chapter,
                   readedChapters: {
                     ...(item.comicbus[comicsID]
@@ -324,6 +326,7 @@ export function fetchChapterEpic(action$: any) {
                 });
                 const result$ = [
                   updateTitle(title),
+                  updateChapterURL(chapterURL),
                   updateReadedChapters(
                     newItem.comicbus[comicsID].readedChapters,
                   ),
