@@ -5,9 +5,10 @@ import rootReducer from '../reducers/popup';
 const logger = createLogger();
 let createStoreWithMiddleware = applyMiddleware(logger)(createStore);
 
-if (process.env.NODE_ENV === 'production') {
-  createStoreWithMiddleware = createStore;
-}
+// if (process.env.NODE_ENV === 'production') {
+//   createStoreWithMiddleware = createStore;
+// }
+createStoreWithMiddleware = createStore;
 
 export default function configureStore(initialState) {
   const store = createStoreWithMiddleware(rootReducer, initialState);
