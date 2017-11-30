@@ -62,7 +62,7 @@ function fetchImgs$(chapter: string) {
     }
 
     var responseContext = response.querySelector('#Form1 > script').textContent
-    
+
     var chs= parseInt(responseContext.match(/var chs=(\d+);/)[1], 10)
     var ti= parseInt(responseContext.match(/var ti=(\d+);/)[1], 10)
     var cs = responseContext.match(/var cs='(\w+)';/)[1]
@@ -120,20 +120,20 @@ function fetchImgs$(chapter: string) {
         // $FlowFixMe
         ch = chs;
       }
-      
+
       // $FlowFixMe
       const [ cshecString, jgiwiString, pqtnbString, fjdebString ] = responseContext.match(/var\s\w+=\s(lc\Wsu\Wcs,i\Wy\W\d+,\d+\W\W);|var\s\w+=(lc\Wsu\Wcs,i\Wy\W\d+,\d+\W\W);|var\s\w+\s=\s(lc\Wsu\Wcs,i\Wy\W\d+,\d+\W\W);|var\s\w+\s=(lc\Wsu\Wcs,i\Wy\W\d+,\d+\W\W);/g)
       eval(cshecString)
       eval(jgiwiString)
       eval(pqtnbString)
       eval(fjdebString)
-      srcString = responseContext.match(/src = 'http\:\/\/\w+'\s\W\s\w+\W\w+,\s\d,\s\d\W\s\+\s'\.\d\w+\.\w+\/'\s\+\s\w+\W\w+,\s\d,\s\d\W\s\+\s'\/'\s\+\s\w+\s\+\s'\/'\s\+\s(\w+)\s\+\s'\/'\s\+\s\w+\W\w\W\s\+\s'_'\s\+\s\w+\W\w+,\s\w+\W\w\W,\s\d\W\s\+\s'\.\w+';/)
-      showChapter = eval(srcString[1])
+      srcUrlString = responseContext.match(/src.*?;/)[0]
+      showChapter = eval(srcUrlString.split('+')[7])
       eval(responseContext.match(/ps=[a-zA-Z]+;/g)[0])
       if (currentCh == showChapter) {
-        for(h=1; h <= ps; h++) {
+        for (h = 1; h <= ps; h++) {
           p = h
-          eval(srcString[0])
+          eval(srcUrlString)
           imgList.push({
             chapter,
             src,
@@ -323,7 +323,7 @@ export function fetchChapterEpic(action$: any) {
               ).mergeMap(() => {
                 chrome.browserAction.setBadgeText({
                   text: `${newItem.update.length === 0 ? '' : newItem.update.length}`,
-                });                
+                });
                 const result$ = [
                   updateTitle(title),
                   updateChapterURL(chapterURL),
