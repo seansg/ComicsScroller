@@ -189,7 +189,9 @@ export function fetchChapterPage$(url: string, comicsID: string) {
         return `comic-${arr[1]}.html?ch=${arr[2]}`;
       }).reverse(),
     ];
-    const uniChapterList = Array.from(new Set(chapterList)).reverse()
+    const uniChapterList = Array.from(new Set(chapterList)).reverse().sort((a, b) => {
+      return b.match(/=(\d+)/)[1] - a.match(/=(\d+)/)[1]
+    })
     const chapters = {
       ...reduce(
         chapterNodes,
