@@ -127,7 +127,7 @@ function fetchImgs$(chapter: string) {
       eval(jgiwiString)
       eval(pqtnbString)
       eval(fjdebString)
-      srcUrlString = responseContext.match(/src.*?;/)[0]
+      srcUrlString = responseContext.match(/src.*?;/)[0].replace('.src', 'src')
       showChapter = eval(srcUrlString.split('+')[7])
       eval(responseContext.match(/ps=[a-zA-Z]+;/g)[0])
       if (currentCh == showChapter) {

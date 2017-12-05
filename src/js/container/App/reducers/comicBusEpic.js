@@ -128,13 +128,14 @@ function fetchImgs$(chapter: string) {
       eval(pqtnbString)
       eval(fjdebString)
 
-      srcUrlString = responseContext.match(/src.*?;/)[0]
+      srcUrlString = responseContext.match(/\.src.*?;/)[0].replace('.src', 'src')
       showChapter = eval(srcUrlString.split('+')[7])
       eval(responseContext.match(/ps=[a-zA-Z]+;/g)[0])
       if (currentCh == showChapter) {
         for (h = 1; h <= ps; h++) {
           p = h
           eval(srcUrlString)
+
           imgList.push({
             chapter,
             src,
